@@ -9,7 +9,7 @@ public class PlayerHealth : MonoBehaviour
     public int currentHealth;
 
     public Slider healthSlider;
-    public GameObject gameOverPanel; // Kéo Panel từ Hierarchy vào
+    public GameObject gameOverPanel;
 
     private bool isDead = false;
 
@@ -18,7 +18,7 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = maxHealth;
         UpdateHealthUI();
         if (gameOverPanel != null)
-            gameOverPanel.SetActive(false); // Ẩn panel khi bắt đầu
+            gameOverPanel.SetActive(false);
     }
 
     public void TakeDamage(int damage)
@@ -34,6 +34,14 @@ public class PlayerHealth : MonoBehaviour
             Die();
         }
     }
+    public void Heal(int amount)
+    {
+        if (isDead) return;
+
+        currentHealth += amount;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        UpdateHealthUI();
+    }
 
     void UpdateHealthUI()
     {
@@ -44,11 +52,9 @@ public class PlayerHealth : MonoBehaviour
     void Die()
     {
         isDead = true;
-        Debug.Log("Player Died!");
         if (gameOverManager != null)
         {
             gameOverManager.ShowGameOver();
         }
-
     }
 }
